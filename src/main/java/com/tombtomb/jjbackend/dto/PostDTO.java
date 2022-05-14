@@ -13,4 +13,6 @@ public class PostDTO {
 
     private String body;
 
+    private UUID userId;
+
 }

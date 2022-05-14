@@ -17,23 +17,23 @@ services:
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
 
-  keycloak:
-    image: quay.io/keycloak/keycloak:legacy
-    container_name: keycloak
-    depends_on:
-      - postgres
-    ports:
-      - 9990:8180
-    environment:
-      DB_VENDOR: POSTGRES
-      DB_ADDR: postgres
-      DB_DATABASE: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
-    networks:
-      - app-network
+#  keycloak:
+#    image: quay.io/keycloak/keycloak:legacy
+#    container_name: keycloak
+#    depends_on:
+#      - postgres
+#    ports:
+#      - 9990:8180
+#    environment:
+#      DB_VENDOR: POSTGRES
+#      DB_ADDR: postgres
+#      DB_DATABASE: ${DB_NAME}
+#      DB_USER: ${DB_USER}
+#      DB_PASSWORD: ${DB_PASSWORD}
+#      KEYCLOAK_USER: admin
+#      KEYCLOAK_PASSWORD: admin
+#    networks:
+#      - app-network
 
   postgres:
     container_name: postgres_db

@@ -22,4 +22,6 @@ public class Post {
     private UUID id;
 
     private String body;
+
+    private UUID userId;
 }
