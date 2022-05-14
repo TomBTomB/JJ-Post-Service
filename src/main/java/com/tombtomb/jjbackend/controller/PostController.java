@@ -26,7 +26,7 @@ public class PostController {
          return ResponseEntity.ok(post);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<?> getPostFor(
             @PathVariable UUID userId,
             @RequestParam(value = "pageNo", defaultValue = DEFAULT_PAGE_NUMBER, required = false) int pageNo,

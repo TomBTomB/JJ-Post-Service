@@ -1,6 +1,5 @@
-package com.tombtomb.jjbackend.model;
+package com.tombtomb.jjbackend.dto;
 
-import com.tombtomb.jjbackend.dto.PostDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostResponse {
+public class PostPage {
     private List<PostDTO> content;
     private int pageNo;
     private int pageSize;

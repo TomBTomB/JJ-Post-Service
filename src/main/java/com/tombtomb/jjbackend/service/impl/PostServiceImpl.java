@@ -3,7 +3,7 @@ package com.tombtomb.jjbackend.service.impl;
 import com.tombtomb.jjbackend.dto.PostCreateDTO;
 import com.tombtomb.jjbackend.dto.PostDTO;
 import com.tombtomb.jjbackend.model.Post;
-import com.tombtomb.jjbackend.model.PostResponse;
+import com.tombtomb.jjbackend.dto.PostPage;
 import com.tombtomb.jjbackend.repository.PostRepository;
 import com.tombtomb.jjbackend.service.PostService;
 import lombok.val;
@@ -43,7 +43,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse getPostsFor(UUID userId, int pageNo, int pageSize) {
+    public PostPage getPostsFor(UUID userId, int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         Page<Post> posts = postRepository.findAll(pageable);
 
@@ -53,7 +53,7 @@ public class PostServiceImpl implements PostService {
                 .filter(post -> post.getUserId().equals(userId))
                 .map(this::mapToDTO).collect(Collectors.toList());
 
-        return PostResponse.builder()
+        return PostPage.builder()
                 .content(content)
                 .pageNo(posts.getNumber())
                 .pageSize(posts.getSize())
