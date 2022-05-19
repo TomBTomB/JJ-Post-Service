@@ -1,13 +1,13 @@
-package com.tombtomb.jjbackend;
+package com.tombtomb.jjpostservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class JjBackendApplication {
+public class JjPostServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(JjBackendApplication.class, args);
+		SpringApplication.run(JjPostServiceApplication.class, args);
 	}
 
 }

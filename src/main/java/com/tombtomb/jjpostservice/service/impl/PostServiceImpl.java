@@ -1,11 +1,11 @@
-package com.tombtomb.jjbackend.service.impl;
+package com.tombtomb.jjpostservice.service.impl;
 
-import com.tombtomb.jjbackend.dto.PostCreateDTO;
-import com.tombtomb.jjbackend.dto.PostDTO;
-import com.tombtomb.jjbackend.model.Post;
-import com.tombtomb.jjbackend.dto.PostPage;
-import com.tombtomb.jjbackend.repository.PostRepository;
-import com.tombtomb.jjbackend.service.PostService;
+import com.tombtomb.jjpostservice.dto.PostCreateDTO;
+import com.tombtomb.jjpostservice.dto.PostDTO;
+import com.tombtomb.jjpostservice.model.Post;
+import com.tombtomb.jjpostservice.dto.PostPage;
+import com.tombtomb.jjpostservice.repository.PostRepository;
+import com.tombtomb.jjpostservice.service.PostService;
 import lombok.val;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +29,7 @@ public class PostServiceImpl implements PostService {
     public Post createPost(PostCreateDTO postCreateDTO) {
         Post post = Post.builder()
                 .body(postCreateDTO.getBody())
+                .userId(postCreateDTO.getUserId())
                 .build();
         return postRepository.save(post);
     }
@@ -39,6 +40,7 @@ public class PostServiceImpl implements PostService {
         return PostDTO.builder()
                 .id(post.getId())
                 .body(post.getBody())
+                .userId(post.getUserId())
                 .build();
     }
 
@@ -70,14 +72,23 @@ public class PostServiceImpl implements PostService {
         return PostDTO.builder()
                 .id(post.getId())
                 .body(post.getBody())
+                .userId(post.getUserId())
                 .build();
     }
 
     private PostDTO mapToDTO(Post post){
-        return PostDTO.builder().id(post.getId()).body(post.getBody()).build();
+        return PostDTO.builder()
+                .id(post.getId())
+                .body(post.getBody())
+                .userId(post.getUserId())
+                .build();
     }
 
     private Post mapToEntity(PostDTO postDTO){
-        return Post.builder().id(postDTO.getId()).body(postDTO.getBody()).build();
+        return Post.builder()
+                .id(postDTO.getId())
+                .body(postDTO.getBody())
+                .userId(postDTO.getUserId())
+                .build();
     }
 }

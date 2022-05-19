@@ -1,9 +1,9 @@
-package com.tombtomb.jjbackend.service;
+package com.tombtomb.jjpostservice.service;
 
-import com.tombtomb.jjbackend.dto.PostCreateDTO;
-import com.tombtomb.jjbackend.dto.PostDTO;
-import com.tombtomb.jjbackend.model.Post;
-import com.tombtomb.jjbackend.dto.PostPage;
+import com.tombtomb.jjpostservice.dto.PostCreateDTO;
+import com.tombtomb.jjpostservice.dto.PostDTO;
+import com.tombtomb.jjpostservice.model.Post;
+import com.tombtomb.jjpostservice.dto.PostPage;
 
 import java.util.UUID;
 

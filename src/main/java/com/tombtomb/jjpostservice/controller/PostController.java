@@ -1,7 +1,7 @@
-package com.tombtomb.jjbackend.controller;
+package com.tombtomb.jjpostservice.controller;
 
-import com.tombtomb.jjbackend.dto.PostCreateDTO;
-import com.tombtomb.jjbackend.service.PostService;
+import com.tombtomb.jjpostservice.dto.PostCreateDTO;
+import com.tombtomb.jjpostservice.service.PostService;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

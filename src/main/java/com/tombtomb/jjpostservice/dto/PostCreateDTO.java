@@ -1,4 +1,4 @@
-package com.tombtomb.jjbackend.dto;
+package com.tombtomb.jjpostservice.dto;
 
 import lombok.Data;
 
