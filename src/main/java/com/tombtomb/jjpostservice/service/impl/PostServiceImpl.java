@@ -45,24 +45,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostPage getPostsFor(UUID userId, int pageNo, int pageSize) {
+    public Page<PostDTO> getPostsFor(UUID userId, int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<Post> posts = postRepository.findAll(pageable);
-
-        List<Post> listOfPosts = posts.getContent();
-
-        List<PostDTO> content= listOfPosts.stream()
-                .filter(post -> post.getUserId().equals(userId))
-                .map(this::mapToDTO).collect(Collectors.toList());
-
-        return PostPage.builder()
-                .content(content)
-                .pageNo(posts.getNumber())
-                .pageSize(posts.getSize())
-                .totalElements(posts.getTotalElements())
-                .totalPages(posts.getTotalPages())
-                .last(posts.isLast())
-                .build();
+        return postRepository.findAllByUserId(userId, pageable)
+                .map(this::mapToDTO);
     }
 
     @Override

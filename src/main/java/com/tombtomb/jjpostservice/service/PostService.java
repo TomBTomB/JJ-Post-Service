@@ -4,6 +4,7 @@ import com.tombtomb.jjpostservice.dto.PostCreateDTO;
 import com.tombtomb.jjpostservice.dto.PostDTO;
 import com.tombtomb.jjpostservice.model.Post;
 import com.tombtomb.jjpostservice.dto.PostPage;
+import org.springframework.data.domain.Page;
 
 import java.util.UUID;
 
@@ -13,7 +14,7 @@ public interface PostService {
 
     PostDTO getPost(UUID postId);
 
-    PostPage getPostsFor(UUID userId, int pageNo, int pageSize);
+    Page<PostDTO> getPostsFor(UUID userId, int pageNo, int pageSize);
 
     PostDTO deletePost(UUID postId);
 

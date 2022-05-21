@@ -8,10 +8,7 @@ import javax.persistence.Id;
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
