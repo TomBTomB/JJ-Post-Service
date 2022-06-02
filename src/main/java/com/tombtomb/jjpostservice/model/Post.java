@@ -1,10 +1,12 @@
 package com.tombtomb.jjpostservice.model;
 
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -21,4 +23,9 @@ public class Post {
     private String body;
 
     private UUID userId;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @NotNull
+    private List<Reply> replies;
 }

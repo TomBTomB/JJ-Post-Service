@@ -1,11 +1,10 @@
 package com.tombtomb.jjpostservice.service;
 
-import com.tombtomb.jjpostservice.dto.PostCreateDTO;
-import com.tombtomb.jjpostservice.dto.PostDTO;
+import com.tombtomb.jjpostservice.dto.*;
 import com.tombtomb.jjpostservice.model.Post;
-import com.tombtomb.jjpostservice.dto.PostPage;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface PostService {
@@ -18,4 +17,7 @@ public interface PostService {
 
     PostDTO deletePost(UUID postId);
 
+    List<PostDTO> getAllPosts();
+
+    PostDTO replyPost(UUID id, ReplyCreateDTO replyCreateDTO);
 }

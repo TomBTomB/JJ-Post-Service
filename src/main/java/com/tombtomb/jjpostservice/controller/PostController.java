@@ -1,6 +1,8 @@
 package com.tombtomb.jjpostservice.controller;
 
 import com.tombtomb.jjpostservice.dto.PostCreateDTO;
+import com.tombtomb.jjpostservice.dto.PostDTO;
+import com.tombtomb.jjpostservice.dto.ReplyCreateDTO;
 import com.tombtomb.jjpostservice.service.PostService;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,12 @@ public class PostController {
          return ResponseEntity.ok(post);
     }
 
+    @GetMapping
+    public ResponseEntity<?> getAllPosts() {
+        val posts = postService.getAllPosts();
+        return ResponseEntity.ok(posts);
+    }
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getPostFor(
             @PathVariable UUID userId,
@@ -45,6 +53,12 @@ public class PostController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePost(@PathVariable UUID id) {
         val post = postService.deletePost(id);
+        return ResponseEntity.ok(post);
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<?> replyPost(@PathVariable UUID id, @RequestBody ReplyCreateDTO replyCreateDTO) {
+        PostDTO post = postService.replyPost(id, replyCreateDTO);
         return ResponseEntity.ok(post);
     }
 
