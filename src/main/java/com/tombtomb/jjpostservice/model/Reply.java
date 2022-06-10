@@ -21,7 +21,7 @@ public class Reply {
     @GeneratedValue
     private UUID id;
 
-    private String body;
+    private String text;
 
     private UUID userId;
 }

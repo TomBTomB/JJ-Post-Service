@@ -6,9 +6,13 @@ import com.tombtomb.jjpostservice.model.Reply;
 import com.tombtomb.jjpostservice.repository.PostRepository;
 import com.tombtomb.jjpostservice.service.PostService;
 import lombok.val;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +31,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post createPost(PostCreateDTO postCreateDTO) {
         Post post = Post.builder()
-                .body(postCreateDTO.getBody())
+                .text(postCreateDTO.getText())
                 .userId(postCreateDTO.getUserId())
                 .build();
         return postRepository.save(post);
@@ -35,11 +39,14 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDTO getPost(UUID postId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) auth.getPrincipal();
+
         val post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
         return PostDTO.builder()
                 .id(post.getId())
-                .body(post.getBody())
-                .userId(post.getUserId())
+                .text(post.getText())
+                .userId(UUID.fromString(principal.getKeycloakSecurityContext().getToken().getId()))
                 .build();
     }
 
@@ -56,7 +63,7 @@ public class PostServiceImpl implements PostService {
         postRepository.delete(post);
         return PostDTO.builder()
                 .id(post.getId())
-                .body(post.getBody())
+                .text(post.getText())
                 .userId(post.getUserId())
                 .build();
     }
@@ -73,7 +80,7 @@ public class PostServiceImpl implements PostService {
     public PostDTO replyPost(UUID id, ReplyCreateDTO replyCreateDTO) {
         val post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
         val reply = Reply.builder()
-                .body(replyCreateDTO.getBody())
+                .text(replyCreateDTO.getBody())
                 .userId(replyCreateDTO.getUserId())
                 .build();
 
@@ -82,7 +89,7 @@ public class PostServiceImpl implements PostService {
 
         val savedPost = postRepository.save(Post.builder()
                 .id(post.getId())
-                .body(post.getBody())
+                .text(post.getText())
                 .userId(post.getUserId())
                 .replies(replies)
                 .build());
@@ -92,7 +99,7 @@ public class PostServiceImpl implements PostService {
     private PostDTO mapToDTO(Post post){
         return PostDTO.builder()
                 .id(post.getId())
-                .body(post.getBody())
+                .text(post.getText())
                 .userId(post.getUserId())
                 .build();
     }
@@ -100,7 +107,7 @@ public class PostServiceImpl implements PostService {
     private Post mapToEntity(PostDTO postDTO){
         return Post.builder()
                 .id(postDTO.getId())
-                .body(postDTO.getBody())
+                .text(postDTO.getText())
                 .userId(postDTO.getUserId())
                 .build();
     }

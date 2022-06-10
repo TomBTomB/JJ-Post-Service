@@ -8,7 +8,7 @@ import java.util.UUID;
 public class ReplyDTO {
     private UUID id;
 
-    private String body;
+    private String text;
 
     private UUID userId;
 }

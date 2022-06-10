@@ -11,7 +11,7 @@ public class PostCreateDTO {
 
     @NotNull
     @Size(min = 1, max = 200, message = "Body must be between 1 and 200 characters")
-    private String body;
+    private String text;
 
     @NotNull
     private UUID userId;
