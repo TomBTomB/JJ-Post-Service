@@ -23,5 +23,5 @@ public class Reply {
 
     private String text;
 
-    private UUID userId;
+    private String username;
 }
