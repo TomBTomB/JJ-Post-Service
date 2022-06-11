@@ -6,6 +6,7 @@ import com.tombtomb.jjpostservice.dto.ReplyCreateDTO;
 import com.tombtomb.jjpostservice.service.PostService;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
+import org.springframework.metrics.annotation.Timed;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/post")
+@Timed("post_controller_time")
 public class PostController {
     private final PostService postService;
     public static final String DEFAULT_PAGE_NUMBER = "0";
