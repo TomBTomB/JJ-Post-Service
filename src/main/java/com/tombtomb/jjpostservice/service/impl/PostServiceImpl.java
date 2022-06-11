@@ -3,16 +3,14 @@ package com.tombtomb.jjpostservice.service.impl;
 import com.tombtomb.jjpostservice.dto.*;
 import com.tombtomb.jjpostservice.model.Post;
 import com.tombtomb.jjpostservice.model.Reply;
+import com.tombtomb.jjpostservice.model.User;
 import com.tombtomb.jjpostservice.repository.PostRepository;
 import com.tombtomb.jjpostservice.service.PostService;
+import com.tombtomb.jjpostservice.service.UserService;
 import lombok.val;
-import org.keycloak.KeycloakPrincipal;
-import org.keycloak.KeycloakSecurityContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,9 +24,11 @@ public class PostServiceImpl implements PostService {
     private final Logger logger = Logger.getLogger(PostServiceImpl.class.getName());
 
     private final PostRepository postRepository;
+    private final UserService userService;
 
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, UserService userService) {
         this.postRepository = postRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -36,7 +36,8 @@ public class PostServiceImpl implements PostService {
         logger.info("Creating post");
         Post post = Post.builder()
                 .text(postCreateDTO.getText())
-                .userId(postCreateDTO.getUserId())
+                .user(userService.getLoggedUser())
+                .replies(List.of())
                 .build();
         logger.info("Post created= " + post.getId());
         return postRepository.save(post);
@@ -45,16 +46,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDTO getPost(UUID postId) {
         logger.info("Getting post: "+ postId);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) auth.getPrincipal();
-
         val post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
         logger.info("Got post: "+ post.getId());
-        return PostDTO.builder()
-                .id(post.getId())
-                .text(post.getText())
-                .userId(UUID.fromString(principal.getKeycloakSecurityContext().getToken().getId()))
-                .build();
+        return mapToDTO(post);
     }
 
     @Override
@@ -62,7 +56,7 @@ public class PostServiceImpl implements PostService {
         logger.info("Getting post page for user: "+ userId);
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         logger.info("Got "+ pageable.getPageSize() +" posts");
-        return postRepository.findAllByUserId(userId, pageable)
+        return postRepository.findAllByUser(userService.getUser(userId), pageable)
                 .map(this::mapToDTO);
     }
 
@@ -72,11 +66,7 @@ public class PostServiceImpl implements PostService {
         val post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
         postRepository.delete(post);
         logger.info("Post "+ post.getId()+ "deleted");
-        return PostDTO.builder()
-                .id(post.getId())
-                .text(post.getText())
-                .userId(post.getUserId())
-                .build();
+        return mapToDTO(post);
     }
 
     @Override
@@ -93,8 +83,8 @@ public class PostServiceImpl implements PostService {
         logger.info("Replying post "+ id);
         val post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
         val reply = Reply.builder()
-                .text(replyCreateDTO.getBody())
-                .userId(replyCreateDTO.getUserId())
+                .text(replyCreateDTO.getText())
+                .user(userService.getLoggedUser())
                 .build();
 
         val replies = post.getReplies();
@@ -103,26 +93,41 @@ public class PostServiceImpl implements PostService {
         val savedPost = postRepository.save(Post.builder()
                 .id(post.getId())
                 .text(post.getText())
-                .userId(post.getUserId())
+                .user(post.getUser())
                 .replies(replies)
                 .build());
         logger.info("Post "+ savedPost.getId()+ "replied by user "+ reply.getUserId());
         return mapToDTO(savedPost);
     }
 
-    private PostDTO mapToDTO(Post post){
+    private PostDTO mapToDTO(Post post) {
         return PostDTO.builder()
                 .id(post.getId())
                 .text(post.getText())
-                .userId(post.getUserId())
+                .user(
+                        mapToDTO(post.getUser())
+                )
+                .thread(post.getReplies().stream().map(this::mapToDTO).collect(Collectors.toList()))
                 .build();
     }
 
-    private Post mapToEntity(PostDTO postDTO){
-        return Post.builder()
-                .id(postDTO.getId())
-                .text(postDTO.getText())
-                .userId(postDTO.getUserId())
+    private UserDTO mapToDTO(User user) {
+        return UserDTO.builder()
+                .username(user.getUsername())
+                .displayName(user.getDisplayName())
+                .id(user.getId())
+                .avatar(user.getAvatar())
+                .bio(user.getBio())
+                .build();
+    }
+
+    private ReplyDTO mapToDTO(Reply reply) {
+        return ReplyDTO.builder()
+                .id(reply.getId())
+                .text(reply.getText())
+                .user(
+                        mapToDTO(reply.getUser())
+                )
                 .build();
     }
 }

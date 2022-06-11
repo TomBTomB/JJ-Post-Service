@@ -1,6 +1,8 @@
 package com.tombtomb.jjpostservice.service;
 
-import com.tombtomb.jjpostservice.dto.*;
+import com.tombtomb.jjpostservice.dto.PostCreateDTO;
+import com.tombtomb.jjpostservice.dto.PostDTO;
+import com.tombtomb.jjpostservice.dto.ReplyCreateDTO;
 import com.tombtomb.jjpostservice.model.Post;
 import org.springframework.data.domain.Page;
 

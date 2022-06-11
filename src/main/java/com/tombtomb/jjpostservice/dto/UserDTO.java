@@ -7,10 +7,14 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class ReplyDTO {
-    private UUID id;
+public class UserDTO {
+    String username;
 
-    private String text;
+    UUID id;
 
-    private UserDTO user;
+    String displayName;
+
+    String avatar;
+
+    String bio;
 }

@@ -1,6 +1,9 @@
 package com.tombtomb.jjpostservice.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -22,7 +25,8 @@ public class Post {
 
     private String text;
 
-    private UUID userId;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private User user;
 
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)

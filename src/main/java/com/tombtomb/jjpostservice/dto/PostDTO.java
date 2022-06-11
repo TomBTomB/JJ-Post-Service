@@ -3,6 +3,7 @@ package com.tombtomb.jjpostservice.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -13,6 +14,8 @@ public class PostDTO {
 
     private String text;
 
-    private UUID userId;
+    private UserDTO user;
+
+    private List<ReplyDTO> thread;
 
 }

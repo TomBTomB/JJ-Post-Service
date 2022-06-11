@@ -16,9 +16,9 @@ import java.util.UUID;
 @RequestMapping("/post")
 @Timed("post_controller_time")
 public class PostController {
-    private final PostService postService;
     public static final String DEFAULT_PAGE_NUMBER = "0";
     public static final String DEFAULT_PAGE_SIZE = "10";
+    private final PostService postService;
 
     public PostController(PostService postService) {
         this.postService = postService;
@@ -26,8 +26,8 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<?> createPost(@Valid @RequestBody PostCreateDTO postCreateDTO) {
-         val post = postService.createPost(postCreateDTO);
-         return ResponseEntity.ok(post);
+        val post = postService.createPost(postCreateDTO);
+        return ResponseEntity.ok(post);
     }
 
     @GetMapping
@@ -41,7 +41,7 @@ public class PostController {
             @PathVariable UUID userId,
             @RequestParam(value = "pageNo", defaultValue = DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE, required = false) int pageSize
-            ) {
+    ) {
         val post = postService.getPostsFor(userId, pageNo, pageSize);
         return ResponseEntity.ok(post);
     }
