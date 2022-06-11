@@ -96,7 +96,7 @@ public class PostServiceImpl implements PostService {
                 .user(post.getUser())
                 .replies(replies)
                 .build());
-        logger.info("Post "+ savedPost.getId()+ "replied by user "+ reply.getUserId());
+        logger.info("Post "+ savedPost.getId()+ "replied by user "+ reply.getUser().getId());
         return mapToDTO(savedPost);
     }
 
