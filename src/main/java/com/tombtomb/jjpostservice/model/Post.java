@@ -25,7 +25,8 @@ public class Post {
 
     private String text;
 
-    private String username;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private User user;
 
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)

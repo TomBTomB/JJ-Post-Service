@@ -34,13 +34,13 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
-    @GetMapping("/user/")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<?> getPostFor(
-            @RequestBody String username,
+            @PathVariable UUID userId,
             @RequestParam(value = "pageNo", defaultValue = DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE, required = false) int pageSize
     ) {
-        val post = postService.getPostsFor(username, pageNo, pageSize);
+        val post = postService.getPostsFor(userId, pageNo, pageSize);
         return ResponseEntity.ok(post);
     }
 

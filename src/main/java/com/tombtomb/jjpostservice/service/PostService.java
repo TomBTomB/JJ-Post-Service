@@ -15,7 +15,7 @@ public interface PostService {
 
     PostDTO getPost(UUID postId);
 
-    Page<PostDTO> getPostsFor(String username, int pageNo, int pageSize);
+    Page<PostDTO> getPostsFor(UUID userId, int pageNo, int pageSize);
 
     PostDTO deletePost(UUID postId);
 

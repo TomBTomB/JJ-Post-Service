@@ -3,16 +3,18 @@ package com.tombtomb.jjpostservice.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 @Builder
 public class UserDTO {
     String username;
 
-    @Builder.Default
-    int id = 1;
+    UUID id;
 
     String displayName;
 
-    @Builder.Default
-    String avatar = "/generic-avatar.jpg";
+    String avatar;
+
+    String bio;
 }
