@@ -65,7 +65,9 @@ public class PostServiceImpl implements PostService {
     public PostDTO deletePost(UUID postId) {
         logger.info("Deleting post="+ postId);
         val post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
-        postRepository.delete(post);
+        if(userService.getLoggedUser().getId().equals(post.getUser().getId())) {
+            postRepository.delete(post);
+        }
         logger.info("Post "+ post.getId()+ "deleted");
         return mapToDTO(post);
     }
